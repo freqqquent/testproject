@@ -1,0 +1,5 @@
+# this file is added automatically when installing Encore with Symfony Flex
+# config/packages/assets.yaml
+framework:
+  assets:
+    json_manifest_path: 'my_vnn_project/public/build/manifest.json'
