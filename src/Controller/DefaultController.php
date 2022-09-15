@@ -4,6 +4,8 @@ namespace App\Controller;
 
 
 use App\Entity\Game;
+use App\Entity\Statistic;
+use App\Repository\StatisticRepository;
 use App\Repository\GameRepository;
 use Doctrine\Persistence\Event\ManagerEventArgs;
 use Doctrine\Persistence\ManagerRegistry;
@@ -25,18 +27,16 @@ class DefaultController extends AbstractController
 
     public function gameAdd(ManagerRegistry $doctrine, Request $request): Response
     {
-        try
-        {
+        try {
             $entityManager = $doctrine->getManager();
             $body = $request->query->get("urlSteam");
             $name = $request->query->get("name");
-            // $body = $request->getContent();
+
             /** @var GameRepository $how */
             $how = $entityManager->getRepository(Game::class);
-            $game = $how->findOneBy(["urlSteam"=>$body]);
-//            $game = $how->findOneBy(["name"=>$name]);
+            $game = $how->findOneBy(["urlSteam" => $body]);
 
-            if ($game == null && $body != null && $name != null){
+            f ($game == null && $body != null && $name != null) {
                 $game = new Game();
                 $game->setUrlSteam($body);
                 $game->setName($name);
@@ -44,33 +44,43 @@ class DefaultController extends AbstractController
                 $game->setChecked("");
                 $entityManager->persist($game);
                 $entityManager->flush();
-        }
-            $entityManager->getRepository(Game::class);
-
-            $how->findAll();
-            $games=$how->findAll();
-            $string ="<table border='1'>";
-            foreach ($games as $game) {
-                    $game->getName();
-                    $game->getNotes();
-                    $game->getUrlSteam();
-                    $string .= "<br>"
-                        ."<tr><td>".$game->getName()."</td>"
-                        ."<td>"."<a href=\"".$game->getUrlSteam()."\">ссылка</a>\n".$game->getUrlSteam()."</td>"
-                        ."\n"."<td>".$game->getNotes()
-                        ."</td></tr>\n";
             }
-            $string.="</table>";
-        }
-        catch (\Throwable $e)
-        {
+
+            $entityManager->getRepository(Game::class);
+            $how->findAll();
+            $games = $how->findAll();
+            $string = "<table border='1'>";
+            foreach ($games as $game) {
+                $game->getName();
+                $game->getNotes();
+                $game->getUrlSteam();
+                $string .= "<br>"
+                    . "<tr><td>" . $game->getName() . "</td>"
+                    . "<td>" . "<a href=\"" . $game->getUrlSteam() . "\">ссылка</a>\n" . $game->getUrlSteam() . "</td>"
+                    . "\n" . "<td>" . $game->getNotes()
+                    . "</td></tr>\n";
+            }
+            $string .= "</table>";
+
+        } catch (\Throwable $e) {
             return new Response($e->getMessage());
 //            file_put_contents('c:/log.log', print_r($e->getMessage(), true), FILE_APPEND);
         }
+        return new Response("Игра добавлена" . "<br>" . $body . $string);
+    }
+        public function statisticAdd (ManagerRegistry $doctrine, Request $request): Response{
 
-        return new Response("Игра добавлена"."<br>".$body.$string);
+        /** @var StatisticRepository $stmt */
 
+            $entityManager = $doctrine->getManager();
+            $stmt = $entityManager->getRepository(Statistic::class);
+            $stmt->countdown();
+            $statistic = $stmt->find(1);
+            $anotherCount = $statistic->getRowNumberCount();
 
+            return new Response($anotherCount);
     }
 }
+
+
 

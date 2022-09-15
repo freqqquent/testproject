@@ -4,15 +4,12 @@ controllers:
 app_lucky_number:
     path: /lucky/number
     controller: App\Controller\LuckyController::number
-
-app_game_page_controller:
-    path: /games/{id}
-    controller: App\Controller\GamesController::gamePage
-
 app_start_page_controller:
     path: /default/
     controller: App\Controller\DefaultController::defaultPage
-
 app_default_page_controller:
     path: /default/abc
     controller: App\Controller\DefaultController::gameAdd
+app_statistic_page_controller:
+    path: /default/dlc
+    controller: App\Controller\DefaultController::statisticAdd
