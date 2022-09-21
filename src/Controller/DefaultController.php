@@ -36,7 +36,7 @@ class DefaultController extends AbstractController
             $how = $entityManager->getRepository(Game::class);
             $game = $how->findOneBy(["urlSteam" => $body]);
 
-            f ($game == null && $body != null && $name != null) {
+            if ($game == null && $body != null && $name != null) {
                 $game = new Game();
                 $game->setUrlSteam($body);
                 $game->setName($name);
